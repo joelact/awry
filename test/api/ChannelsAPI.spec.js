@@ -228,6 +228,34 @@ describe("the Channels API", () => {
     });
   });
 
+  describe("move method", () => {
+    it("makes the right request", () => {
+      const mock = nock("http://fake.local")
+        .post("/ari/channels/foo/move")
+        .query({
+          app: "someApp",
+          appArgs: "someAppArgs",
+        })
+        .reply(200, { foo: "bar" });
+
+      const api = new ChannelsAPI({
+        baseUrl: "http://fake.local/ari",
+        username: "user",
+        password: "1234",
+      });
+
+      return api
+        .move({
+          channelId: "foo",
+          app: "someApp",
+          appArgs: "someAppArgs",
+        })
+        .then(() => {
+          mock.done();
+        });
+    });
+  });
+
   describe("redirect method", () => {
     it("makes the right request", () => {
       const mock = nock("http://fake.local")

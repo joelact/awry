@@ -344,6 +344,30 @@ export default class ChannelsAPI {
   }
 
   /**
+   * POST /channels/{channelId}/move
+   *
+   * Moves channel from one stasis application to another stasis application.
+   *
+   * @param {object} params
+   * @param {string} params.channelId The id of the channel to move.
+   * @param {string} params.app The app to move to.
+   * @param {string} [params.appArgs] The args to pass to the app.
+   * @returns {Promise} Resolves when the operation is successful. Rejects
+   *  when the specified channel cannot be found (status 404) or the specified
+   *  channel is not in a stasis application (status 409).
+   */
+  move(params) {
+    const { channelId, app, appArgs } = params;
+    const id = encodeURIComponent(channelId);
+
+    return this._request({
+      method: "POST",
+      url: `${this._baseUrl}/channels/${id}/move`,
+      params: { app, appArgs },
+    });
+  }
+
+  /**
    * POST /channels/{channelId}/redirect
    *
    * Redirect the channel to a different location.
